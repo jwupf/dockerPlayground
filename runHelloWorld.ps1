@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]
     $ImageReference,
-    [Parameter(Mandatory=$true)][string]
+    [string[]]
     $Command
 )
 

@@ -5,16 +5,20 @@ Describe "docker setup" {
         $dockerImageReference = ("{0}:{1}" -f $dockerRepo, $dockerRepoTag)
 
         $extDockerRepo = "extended"
-        $extDockerRepoTag = "0.0.1"
-        $extDockerImageReference = ("{0}:{1}" -f $extDockerRepo, $extDockerRepoTag)
+        $extDockerImageReference = ("{0}:{1}" -f $extDockerRepo, $dockerRepoTag)
 
-        if ($null -ne (docker images -q $dockerImageReference)) {
-            docker image rm -f $dockerImageReference
+        $runnerDockerRepo = "runner"
+        $runnerDockerImageReference = ("{0}:{1}" -f $runnerDockerRepo, $dockerRepoTag)
+        
+        Function Remove-DockerImage($ImageName) {
+            if ($null -ne (docker images -q $ImageName)) {
+                docker image rm -f $ImageName
+            }    
         }
-
-        if ($null -ne (docker images -q $extDockerImageReference)) {
-            docker image rm -f $extDockerImageReference
-        }
+        
+        Remove-DockerImage -ImageName $dockerImageReference
+        Remove-DockerImage -ImageName $extDockerImageReference
+        Remove-DockerImage -ImageName $runnerDockerImageReference        
     }
 
     Context "base image" {        
@@ -31,7 +35,10 @@ Describe "docker setup" {
             .\runHelloWorld.ps1 -ImageReference $dockerImageReference -Command "/run.sh" | Should -Be "Hello World! From Script!"
         }
     }
-    Context "extended base image" {        
+    Context "extended base image" {    
+        BeforeAll{
+            .\buildImage.ps1 -DockerPath ".\baseImage" -ImageReference $dockerImageReference
+        }    
         It "build ext image" {
             .\buildImage.ps1 -DockerPath ".\extImage" -ImageReference $extDockerImageReference
             docker images -q $extDockerImageReference | Should -Not -BeNullOrEmpty
@@ -45,13 +52,29 @@ Describe "docker setup" {
             .\runHelloWorld.ps1 -ImageReference $extDockerImageReference -Command "/runExt.sh" | Should -Be "Hello World! From ext. Script!"
         }
     }
-    AfterAll {
-        if ($null -ne (docker images -q $dockerImageReference)) {
-            docker image rm -f $dockerImageReference
+
+    Context "runner image"{
+        BeforeAll{
+            .\buildImage.ps1 -DockerPath ".\baseImage" -ImageReference $dockerImageReference
+        }    
+
+        It "build a runner image" {
+            .\buildImage.ps1 -DockerPath ".\runnerImage" -ImageReference $runnerDockerImageReference
+            docker images -q $runnerDockerImageReference | Should -Not -BeNullOrEmpty
         }
 
-        if ($null -ne (docker images -q $extDockerImageReference)) {
-            docker image rm -f $extDockerImageReference
+        It "runs hello world without given command" {
+            .\runHelloWorld.ps1 -ImageReference $runnerDockerImageReference | Should -Be "Hello World! From Script!"
         }
+
+        It "runs hello world with custom command" {
+            $var = .\runHelloWorld.ps1 -ImageReference $runnerDockerImageReference -Command "echo","Huh?" 
+            $var | Should -Be "Huh?"
+        }
+    }
+    AfterAll {        
+        Remove-DockerImage -ImageName $dockerImageReference
+        Remove-DockerImage -ImageName $extDockerImageReference
+        Remove-DockerImage -ImageName $runnerDockerImageReference        
     }
 }
