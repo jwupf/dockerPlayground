@@ -1,0 +1,1 @@
+Get-Content -Path ".\Dockerfile" | docker build -
