@@ -3,14 +3,23 @@ Context "docker setup" {
         $dockerRepo = "base"
         $dockerRepoTag = "0.0.1"
         $dockerImageReference = ("{0}:{1}" -f $dockerRepo, $dockerRepoTag)
-        docker image rm -f $dockerImageReference
+
+        if($null -ne (docker images -q $dockerImageReference)){
+            docker image rm -f $dockerImageReference
+        }
     }
     It "build image" {
-        .\buildImage.ps1
-        docker images -q base:0.0.1 | Should -Not -BeNullOrEmpty
-    }
+        .\buildImage.ps1  -ImageReference $dockerImageReference
+        docker images -q $dockerImageReference | Should -Not -BeNullOrEmpty
+    } 
 
     It "runs hello world" {
-        .\runHelloWorld.ps1 | Should -Be "Hello World!"
+        .\runHelloWorld.ps1 -ImageReference $dockerImageReference | Should -Be "Hello World!"
+    }
+    
+    AfterAll{
+        if($null -ne (docker images -q $dockerImageReference)){
+            docker image rm -f $dockerImageReference
+        }
     }
 }

@@ -1,1 +1,6 @@
-Get-Content -Path ".\Dockerfile" | docker build -t "base:0.0.1" -
+param(
+    [Parameter(Mandatory=$true)][string]
+    $ImageReference
+)
+
+Get-Content -Path ".\Dockerfile" | docker build -t $ImageReference -

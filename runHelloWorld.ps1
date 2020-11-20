@@ -1,1 +1,6 @@
-docker run --rm -it base:0.0.1 echo "Hello World!"
+param(
+    [Parameter(Mandatory=$true)][string]
+    $ImageReference
+)
+
+docker run --rm -it $ImageReference echo "Hello World!"
