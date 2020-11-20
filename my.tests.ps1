@@ -35,7 +35,11 @@ Context "docker setup" {
         docker images -q $extDockerImageReference | Should -Not -BeNullOrEmpty
     } 
 
-    It "runs ext hello world" {
+    It "runs hello world in ext base" {
+        docker run --rm -it $extDockerImageReference "/run.sh" | Should -Be "Hello World! From Script!"
+    }
+
+    It "runs ext hello world in ext base" {
         .\runHelloWorld.ps1 -ImageReference $extDockerImageReference | Should -Be "Hello World! From ext. Script!"
     }
 

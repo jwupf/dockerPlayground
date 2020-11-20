@@ -1,5 +1,5 @@
 FROM base:0.0.1
 
-ADD run.sh run.sh
+ADD runExt.sh runExt.sh
 
-CMD ["/run.sh"]
+CMD ["/runExt.sh"]
