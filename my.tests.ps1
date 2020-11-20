@@ -8,15 +8,20 @@ Context "docker setup" {
             docker image rm -f $dockerImageReference
         }
     }
+
+    It "build script failes if file does not exist" {
+        {.\buildImage.ps1 -DockerPath ".\Dockerfile.does.not.exist" -ImageReference $dockerImageReference} |Should -Throw # "DockerPath"
+    }
+
     It "build image" {
-        .\buildImage.ps1  -ImageReference $dockerImageReference
+        .\buildImage.ps1 -DockerPath ".\Dockerfile.base" -ImageReference $dockerImageReference
         docker images -q $dockerImageReference | Should -Not -BeNullOrEmpty
     } 
 
     It "runs hello world" {
         .\runHelloWorld.ps1 -ImageReference $dockerImageReference | Should -Be "Hello World!"
     }
-    
+
     AfterAll{
         if($null -ne (docker images -q $dockerImageReference)){
             docker image rm -f $dockerImageReference
