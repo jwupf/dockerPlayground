@@ -11,13 +11,46 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Run docker.tests.ps1",
+				"name": "Run base.docker.tests.ps1",
 				"type": "PowerShell",
 				"request": "launch",
 				"script": "Invoke-Pester",
 				"args": [
 					"-script",
-					"./docker.tests.ps1"
+					"./tests/base.docker.tests.ps1"
+				],
+				"cwd": "${workspaceRoot}"
+			},
+			{
+				"name": "Run ext.docker.tests.ps1",
+				"type": "PowerShell",
+				"request": "launch",
+				"script": "Invoke-Pester",
+				"args": [
+					"-script",
+					"./tests/ext.docker.tests.ps1"
+				],
+				"cwd": "${workspaceRoot}"
+			},
+			{
+				"name": "Run runner.docker.tests.ps1",
+				"type": "PowerShell",
+				"request": "launch",
+				"script": "Invoke-Pester",
+				"args": [
+					"-script",
+					"./tests/runner.docker.tests.ps1"
+				],
+				"cwd": "${workspaceRoot}"
+			},
+			{
+				"name": "Run all tests",
+				"type": "PowerShell",
+				"request": "launch",
+				"script": "Invoke-Pester",
+				"args": [
+					"-script",
+					"./tests/*.tests.ps1"
 				],
 				"cwd": "${workspaceRoot}"
 			}
