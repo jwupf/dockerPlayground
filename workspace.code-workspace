@@ -11,13 +11,13 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Run my.tests.ps1",
+				"name": "Run docker.tests.ps1",
 				"type": "PowerShell",
 				"request": "launch",
 				"script": "Invoke-Pester",
 				"args": [
 					"-script",
-					"./my.tests.ps1"
+					"./docker.tests.ps1"
 				],
 				"cwd": "${workspaceRoot}"
 			}
