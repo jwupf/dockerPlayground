@@ -27,7 +27,7 @@ Context "docker setup" {
     } 
 
     It "runs hello world" {
-        .\runHelloWorld.ps1 -ImageReference $dockerImageReference | Should -Be "Hello World! From Script!"
+        .\runHelloWorld.ps1 -ImageReference $dockerImageReference -Command "/run.sh" | Should -Be "Hello World! From Script!"
     }
 
     It "build ext image" {
@@ -36,11 +36,11 @@ Context "docker setup" {
     } 
 
     It "runs hello world in ext base" {
-        docker run --rm -it $extDockerImageReference "/run.sh" | Should -Be "Hello World! From Script!"
+        .\runHelloWorld.ps1 -ImageReference $extDockerImageReference -Command "/run.sh" | Should -Be "Hello World! From Script!"
     }
 
     It "runs ext hello world in ext base" {
-        .\runHelloWorld.ps1 -ImageReference $extDockerImageReference | Should -Be "Hello World! From ext. Script!"
+        .\runHelloWorld.ps1 -ImageReference $extDockerImageReference -Command "/runExt.sh" | Should -Be "Hello World! From ext. Script!"
     }
 
     AfterAll{

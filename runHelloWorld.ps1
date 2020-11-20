@@ -1,6 +1,8 @@
 param(
     [Parameter(Mandatory=$true)][string]
-    $ImageReference
+    $ImageReference,
+    [Parameter(Mandatory=$true)][string]
+    $Command
 )
 
-docker run --rm -it $ImageReference
+docker run --rm -it $ImageReference $Command
