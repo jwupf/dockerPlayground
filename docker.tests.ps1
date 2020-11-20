@@ -1,4 +1,4 @@
-Describe "docker setup" {
+Describe "Learn how to create docker images that do different things" {
     BeforeAll {
         $dockerRepo = "base"
         $dockerRepoTag = "0.0.1"
@@ -20,54 +20,56 @@ Describe "docker setup" {
         Remove-DockerImage -ImageName $extDockerImageReference
         Remove-DockerImage -ImageName $runnerDockerImageReference        
     }
-
-    Context "base image" {        
-        It "build script failes if file does not exist" {
+    
+    Context "Handle the case that the docker build context does not exist" {        
+        It "The build script fails with an exception if the context folder does not exist" {
             { .\buildDockerImage.ps1 -DockerPath ".\Dockerfile.does.not.exist" -ImageReference $dockerImageReference } | Should -Throw # "DockerPath"
         }
+    }
 
-        It "build image" {
+    Context "Creating the base image" {                
+        It "Build the base image using 'baseImage' as the build context" {
             .\buildDockerImage.ps1 -DockerPath ".\baseImage" -ImageReference $dockerImageReference
             docker images -q $dockerImageReference | Should -Not -BeNullOrEmpty
         } 
 
-        It "runs hello world" {
+        It "Run the custom script(named 'run.sh') that is part of the base image" {
             .\runDockerImage.ps1 -ImageReference $dockerImageReference -Command "/run.sh" | Should -Be "Hello World! From Script!"
         }
     }
-    Context "extended base image" {    
+    Context "Creating a image that extends the base image" {    
         BeforeAll{
             .\buildDockerImage.ps1 -DockerPath ".\baseImage" -ImageReference $dockerImageReference
         }    
-        It "build ext image" {
+        It "Build extended image using 'extImage' as the build context, assuming the base image already exists" {
             .\buildDockerImage.ps1 -DockerPath ".\extImage" -ImageReference $extDockerImageReference
             docker images -q $extDockerImageReference | Should -Not -BeNullOrEmpty
         } 
 
-        It "runs hello world in ext base" {
+        It "Run the custom script(named 'run.sh') that is still part of the extended image" {
             .\runDockerImage.ps1 -ImageReference $extDockerImageReference -Command "/run.sh" | Should -Be "Hello World! From Script!"
         }
 
-        It "runs ext hello world in ext base" {
+        It "Run the custom script(named 'runExt.sh') that is only part of the extended image" {
             .\runDockerImage.ps1 -ImageReference $extDockerImageReference -Command "/runExt.sh" | Should -Be "Hello World! From ext. Script!"
         }
     }
 
-    Context "runner image"{
+    Context "Creating a image that extends the base image and has a default command to run on start"{
         BeforeAll{
             .\buildDockerImage.ps1 -DockerPath ".\baseImage" -ImageReference $dockerImageReference
         }    
 
-        It "build a runner image" {
+        It "Build runner image using 'runnerImage' as the build context, assuming the base image already exists" {
             .\buildDockerImage.ps1 -DockerPath ".\runnerImage" -ImageReference $runnerDockerImageReference
             docker images -q $runnerDockerImageReference | Should -Not -BeNullOrEmpty
         }
 
-        It "runs hello world without given command" {
+        It "Run the custom script(named 'run.sh') that is still part of the runner image if no special command was given" {
             .\runDockerImage.ps1 -ImageReference $runnerDockerImageReference | Should -Be "Hello World! From Script!"
         }
 
-        It "runs hello world with custom command" {
+        It "Run the custom command given via the -Command switch and not the default command" {        
             $var = .\runDockerImage.ps1 -ImageReference $runnerDockerImageReference -Command "echo","Huh?" 
             $var | Should -Be "Huh?"
         }
