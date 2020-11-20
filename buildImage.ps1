@@ -1,1 +1,1 @@
-Get-Content -Path ".\Dockerfile" | docker build -
+Get-Content -Path ".\Dockerfile" | docker build -t "base:0.0.1" -

@@ -1,0 +1,1 @@
+docker run --rm -it base:0.0.1 echo "Hallo Welt!"
