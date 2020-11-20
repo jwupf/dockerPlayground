@@ -14,12 +14,12 @@ Context "docker setup" {
     }
 
     It "build image" {
-        .\buildImage.ps1 -DockerPath ".\Dockerfile.base" -ImageReference $dockerImageReference
+        .\buildImage.ps1 -DockerPath ".\baseImage" -ImageReference $dockerImageReference
         docker images -q $dockerImageReference | Should -Not -BeNullOrEmpty
     } 
 
     It "runs hello world" {
-        .\runHelloWorld.ps1 -ImageReference $dockerImageReference | Should -Be "Hello World!"
+        .\runHelloWorld.ps1 -ImageReference $dockerImageReference | Should -Be "Hello World! From Script!"
     }
 
     AfterAll{

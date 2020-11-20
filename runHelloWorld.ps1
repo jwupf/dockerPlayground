@@ -3,4 +3,4 @@ param(
     $ImageReference
 )
 
-docker run --rm -it $ImageReference echo "Hello World!"
+docker run --rm -it $ImageReference

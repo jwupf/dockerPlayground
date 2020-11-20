@@ -6,4 +6,4 @@ param(
     $ImageReference
 )
 
-Get-Content -Path $DockerPath | docker build -t $ImageReference -
+docker build -t $ImageReference $DockerPath
