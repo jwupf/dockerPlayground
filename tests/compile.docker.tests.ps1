@@ -15,8 +15,6 @@ Describe "Learn how to create docker images that do different things(compiler im
         New-Item -Path $outFolder -ItemType Directory
 
         $compiledFilePath = Join-Path -Path $outFolder -ChildPath "prg"
-
-        
         
         Remove-DockerImage -ImageName $dockerImageReference    
         Remove-DockerImage -ImageName $compileDockerImageReference    
@@ -33,7 +31,7 @@ Describe "Learn how to create docker images that do different things(compiler im
         }
 
         It "Run the compile script(named 'compile.sh') that is part of the compile image if no special command was given" {
-            $driveMapping = (($srcFolder,"/src","ro"), ($outFolder,"/out","rw"))
+            $driveMapping = (($srcFolder, "/src", "ro"), ($outFolder, "/out", "rw"))
             ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -Mapping $driveMapping
             $compiledFilePath | Should -Exist
         }

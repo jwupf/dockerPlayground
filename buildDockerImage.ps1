@@ -1,8 +1,8 @@
 param(
-    [Parameter(Mandatory=$true)][string]
-    [ValidateScript({Test-Path $_})]
+    [Parameter(Mandatory = $true)][string]
+    [ValidateScript( { Test-Path $_ })]
     $DockerPath,
-    [Parameter(Mandatory=$true)][string]
+    [Parameter(Mandatory = $true)][string]
     $ImageReference
 )
 

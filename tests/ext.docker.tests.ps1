@@ -14,7 +14,7 @@ Describe "Learn how to create docker images that do different things(extend imag
     }
     
     Context "Creating a image that extends the base image" {    
-        BeforeAll{
+        BeforeAll {
             ./buildDockerImage.ps1 -DockerPath "./baseImage" -ImageReference $dockerImageReference
         }    
         It "Build extended image using 'extImage' as the build context, assuming the base image already exists" {

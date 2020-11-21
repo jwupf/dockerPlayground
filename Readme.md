@@ -1,3 +1,4 @@
+# Docker for compiling/creating stuff
 ## WSL
 
 install Debian distro from Windows Store 
@@ -20,14 +21,14 @@ wsl -d Debian
 ```
 
 
-### using WSL with vscode
+## using WSL with vscode
 
 install vscode
 ```
 sudo apt install vscode
 ```
 
-### Powershell
+## Powershell
 
 getting powershell:
 
@@ -59,5 +60,4 @@ start vscode with:
 code .
 ```
 This may need the Remote - WSL extension on the windows side
-
 ### using WSL for docker

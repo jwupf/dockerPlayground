@@ -13,8 +13,8 @@ Describe "Learn how to create docker images that do different things(autorun ima
         Remove-DockerImage -ImageName $runnerDockerImageReference        
     }
     
-    Context "Creating a image that extends the base image and has a default command to run on start"{
-        BeforeAll{
+    Context "Creating a image that extends the base image and has a default command to run on start" {
+        BeforeAll {
             ./buildDockerImage.ps1 -DockerPath "./baseImage" -ImageReference $dockerImageReference
         }    
 
@@ -28,7 +28,7 @@ Describe "Learn how to create docker images that do different things(autorun ima
         }
 
         It "Run the custom command given via the -Command switch and not the default command" {        
-            $var = ./runDockerImage.ps1 -ImageReference $runnerDockerImageReference -Command "echo","Huh?" 
+            $var = ./runDockerImage.ps1 -ImageReference $runnerDockerImageReference -Command "echo", "Huh?" 
             $var | Should -Be "Huh?"
         }
     }
