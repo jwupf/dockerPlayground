@@ -10,7 +10,7 @@ Describe "Learn how to create docker images that do different things(compiler im
         $compileDockerImageReference = ("{0}:{1}" -f $compileDockerRepo, $dockerRepoTag)
         
         $contextDir = "./compileImage"
-        $srcFolder = Resolve-Path(Join-Path -Path  $contextDir -ChildPath "src")
+        $srcFolder = Resolve-Path(Join-Path -Path  $PSScriptRoot -ChildPath "src")
         $outFolder = Get-FullTestDrivePath(Join-Path -Path "TestDrive:" -ChildPath "out")
         New-Item -Path $outFolder -ItemType Directory
 
