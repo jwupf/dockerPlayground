@@ -9,7 +9,8 @@ RUN mkdir /src
 
 VOLUME [ "/out", "/src" ]
 
+ADD compile.sh /compile.sh
 
-ADD compile.sh compile.sh
+RUN chmod u+x /compile.sh
 
 CMD ["/compile.sh"]
