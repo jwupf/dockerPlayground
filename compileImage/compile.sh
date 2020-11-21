@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gcc /src/main.cpp -o /out/prg
+g++ /src/main.cpp -o /out/prg
