@@ -32,7 +32,8 @@ Describe "Learn how to create docker images that do different things(compiler im
 
         It "Run the compile script(named 'compile.sh') that is part of the compile image if no special command was given" {
             $driveMapping = (($srcFolder, "/src", "ro"), ($outFolder, "/out", "rw"))
-            ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -Mapping $driveMapping
+            $dockerOutput = ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -Mapping $driveMapping
+            $dockerOutput | Should -BeNullOrEmpty
             $compiledFilePath | Should -Exist
         }
     }
