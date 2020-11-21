@@ -55,6 +55,17 @@
 				"cwd": "${workspaceRoot}"
 			},
 			{
+				"name": "Run debian.package.docker.tests.ps1",
+				"type": "PowerShell",
+				"request": "launch",
+				"script": "Invoke-Pester",
+				"args": [
+					"-script",
+					"./tests/debian.package.docker.tests.ps1"
+				],
+				"cwd": "${workspaceRoot}"
+			},
+			{
 				"name": "Run all tests",
 				"type": "PowerShell",
 				"request": "launch",
