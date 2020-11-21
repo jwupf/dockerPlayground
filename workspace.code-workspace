@@ -44,6 +44,17 @@
 				"cwd": "${workspaceRoot}"
 			},
 			{
+				"name": "Run compile.docker.tests.ps1",
+				"type": "PowerShell",
+				"request": "launch",
+				"script": "Invoke-Pester",
+				"args": [
+					"-script",
+					"./tests/compile.docker.tests.ps1"
+				],
+				"cwd": "${workspaceRoot}"
+			},
+			{
 				"name": "Run all tests",
 				"type": "PowerShell",
 				"request": "launch",

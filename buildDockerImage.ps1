@@ -6,4 +6,5 @@ param(
     $ImageReference
 )
 
+
 docker build -t $ImageReference $DockerPath

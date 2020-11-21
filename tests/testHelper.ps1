@@ -3,3 +3,10 @@ Function Remove-DockerImage($ImageName) {
         docker image rm -f $ImageName
     }    
 }
+
+Function Get-FullTestDrivePath {
+    Param(
+        [string] $Path
+    )
+    return $Path.Replace('TestDrive:', (Get-PSDrive TestDrive).Root)
+}
