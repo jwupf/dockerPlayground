@@ -10,15 +10,16 @@ Describe "Learn how to create docker images that do different things(compiler im
         $compileDockerImageReference = ("{0}:{1}" -f $compileDockerRepo, $dockerRepoTag)
         
         $contextDir = "./compileImage"
-        $srcFolder = Resolve-Path (Join-Path -Path $contextDir -ChildPath "src" )
-        $outFolder = Resolve-Path (Join-Path -Path $contextDir -ChildPath "out" )
+        $srcFolder = Resolve-Path(Join-Path -Path  $contextDir -ChildPath "src")
+        $outFolder = Get-FullTestDrivePath(Join-Path -Path "TestDrive:" -ChildPath "out")
+        New-Item -Path $outFolder -ItemType Directory
 
-        $compiledFile = Get-FullTestDrivePath(Join-Path -Path $outFolder -ChildPath "myProgram")
+        $compiledFilePath = Join-Path -Path $outFolder -ChildPath "prg"
 
         
         
         Remove-DockerImage -ImageName $dockerImageReference    
-        # Remove-DockerImage -ImageName $compileDockerImageReference    
+        Remove-DockerImage -ImageName $compileDockerImageReference    
     }
 
     Context "Creating a image that extends the base image and has a compile script run on start" {
@@ -33,23 +34,13 @@ Describe "Learn how to create docker images that do different things(compiler im
 
         It "Run the compile script(named 'compile.sh') that is part of the compile image if no special command was given" {
             $driveMapping = (($srcFolder,"/src"), ($outFolder,"/out"))
-            $compileResult = ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -Mapping $driveMapping -Command "touch /src/test1.txt"
-            $compileResult | Should -Not -BeNullOrEmpty
-            # $compiledFile | Should -Exist
+            ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -Mapping $driveMapping
+            $compiledFilePath | Should -Exist
         }
-
-
-        #     ./runDockerImage.ps1 -ImageReference $runnerDockerImageReference | Should -Be "Hello World! From Script!"
-        # }
-
-        # It "Run the custom command given via the -Command switch and not the default command" {        
-        #     $var = ./runDockerImage.ps1 -ImageReference $runnerDockerImageReference -Command "echo","Huh?" 
-        #     $var | Should -Be "Huh?"
-        # }
     }
 
     AfterAll {        
         Remove-DockerImage -ImageName $dockerImageReference
-        #Remove-DockerImage -ImageName $compileDockerImageReference        
+        Remove-DockerImage -ImageName $compileDockerImageReference  
     }
 }

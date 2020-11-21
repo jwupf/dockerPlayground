@@ -12,4 +12,4 @@ VOLUME [ "/out", "/src" ]
 
 ADD compile.sh compile.sh
 
-# CMD ["/compile.sh"]
+CMD ["/compile.sh"]
