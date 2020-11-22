@@ -4,8 +4,6 @@ Describe "Learn how to create docker images that do different things(compiler im
         
         $dockerRepo = "base"
         $dockerRepoTag = "0.0.1"
-        $dockerImageReference = ("{0}:{1}" -f $dockerRepo, $dockerRepoTag)
-        
         $compileDockerRepo = "compiler"
         $compileDockerImageReference = ("{0}:{1}" -f $compileDockerRepo, $dockerRepoTag)
         
@@ -15,16 +13,11 @@ Describe "Learn how to create docker images that do different things(compiler im
         New-Item -Path $outFolder -ItemType Directory
 
         $compiledFilePath = Join-Path -Path $outFolder -ChildPath "prg"
-        
-        Remove-DockerImage -ImageName $dockerImageReference    
+         
         Remove-DockerImage -ImageName $compileDockerImageReference    
     }
 
-    Context "Creating a image that extends the base image and has a compile script run on start" {
-        BeforeAll {
-            ./buildDockerImage.ps1 -DockerPath "./baseImage" -ImageReference $dockerImageReference
-        }    
-
+    Context "Creating a image that extends the base image and has a compile script run on start" { 
         It "Build runner image using 'compileImage' as the build context, assuming the base image already exists" {
             ./buildDockerImage.ps1 -DockerPath $contextDir -ImageReference $compileDockerImageReference
             docker images -q $compileDockerImageReference | Should -Not -BeNullOrEmpty
@@ -32,14 +25,13 @@ Describe "Learn how to create docker images that do different things(compiler im
 
         It "Run the compile script(named 'compile.sh') that is part of the compile image if no special command was given" {
             $driveMapping = (($srcFolder, "/src", "ro"), ($outFolder, "/out", "rw"))
-            $dockerOutput = ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -Mapping $driveMapping
+            $dockerOutput = ./runDockerImage.ps1 -ImageReference $compileDockerImageReference -PathMappings $driveMapping
             $dockerOutput | Should -BeNullOrEmpty
             $compiledFilePath | Should -Exist
         }
     }
 
     AfterAll {        
-        Remove-DockerImage -ImageName $dockerImageReference
         Remove-DockerImage -ImageName $compileDockerImageReference  
     }
 }

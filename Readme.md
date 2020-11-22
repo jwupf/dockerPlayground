@@ -1,4 +1,9 @@
 # Docker for compiling/creating stuff
+
+## Without WSL
+
+right now it works without WSL, but I do not know what I changed to make the compile scenario work.
+
 ## WSL
 
 install Debian distro from Windows Store 
@@ -60,4 +65,12 @@ start vscode with:
 code .
 ```
 This may need the Remote - WSL extension on the windows side
+
 ### using WSL for docker
+
+complicated
+
+```
+#> wsl -d Debian ls -lisah
+#> wsl -d Debian pwsh -noni -Command "& Write-Output 'Hello from pwsh inside of the Debian WSL distro'"
+```

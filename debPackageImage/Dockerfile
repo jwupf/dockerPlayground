@@ -1,4 +1,4 @@
-FROM base:0.0.1
+FROM debian:stable-slim
 
 RUN apt update \
     && apt upgrade \
