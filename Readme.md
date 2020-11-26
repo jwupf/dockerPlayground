@@ -74,3 +74,8 @@ complicated
 #> wsl -d Debian ls -lisah
 #> wsl -d Debian pwsh -noni -Command "& Write-Output 'Hello from pwsh inside of the Debian WSL distro'"
 ```
+
+run all the tests:
+```
+wsl -d Debian pwsh -noni -Command "& Invoke-Pester -script ./tests/*.tests.ps1"
+```

@@ -7,4 +7,6 @@ param(
 )
 
 
-docker build -t $ImageReference $DockerPath
+$process = "docker", "build", "-t" + $ImageReference + $DockerPath
+Invoke-Expression ($process -join ' ')
+#docker build -t $ImageReference $DockerPath
