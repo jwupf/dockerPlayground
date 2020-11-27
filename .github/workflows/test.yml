@@ -30,6 +30,7 @@ jobs:
         uses: docker/setup-buildx-action@v1.0.3
         
       - name: run the tests
+        id: testing_stuff
         uses: zyborg/pester-tests-report@master
         with:
           include_paths: tests
@@ -41,6 +42,6 @@ jobs:
       - name: dump test results
         shell: pwsh
         run: |
-          Write-Host 'Total Tests Executed...:  ${{ steps.test_module.outputs.total_count }}'
-          Write-Host 'Total Tests PASSED.....:  ${{ steps.test_module.outputs.passed_count }}'
-          Write-Host 'Total Tests FAILED.....:  ${{ steps.test_module.outputs.failed_count }}'
+          Write-Host 'Total Tests Executed...:  ${{ steps.testing_stuff.outputs.total_count }}'
+          Write-Host 'Total Tests PASSED.....:  ${{ steps.testing_stuff.outputs.passed_count }}'
+          Write-Host 'Total Tests FAILED.....:  ${{ steps.testing_stuff.outputs.failed_count }}'
