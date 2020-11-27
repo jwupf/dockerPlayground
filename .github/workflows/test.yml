@@ -27,5 +27,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run all the tests
+        shell: powershell
         run: |
-          pwsh -command "Invoke-Pester -script .\$GITHUB_WORKSPACE\tests\*tests.ps1"          
+          Write-Information "Running all the tests"
+          Invoke-Pester -script .\tests\*tests.ps1
