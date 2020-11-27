@@ -30,7 +30,7 @@ jobs:
         uses: docker/setup-buildx-action@v1.0.3
         
       - name: run the tests
-        uses: zyborg/pester-tests-report@latest
+        uses: zyborg/pester-tests-report@master
         with:
           include_paths: tests
           report_name: dockerPlaygrounTests
