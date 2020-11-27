@@ -32,4 +32,4 @@ jobs:
           docker version
           Write-Information "Running all the tests"
           Invoke-Pester -script .\tests\*tests.ps1 -Passthru
-          
+          if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
