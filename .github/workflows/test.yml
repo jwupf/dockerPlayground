@@ -23,14 +23,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: run the tests
       - uses: actions/checkout@v2  
-      - uses: docker/setup-buildx-action@v1.0.3            
+      - uses: docker/setup-buildx-action@v1.0.3
+      - uses: zyborg/pester-tests-report@latest
+        with:
+          include_paths: tests
+          report_name: dockerPlaygrounTests
+          report_title: My Docker Playground Tests
+          github_token: ${{ secrets.GITHUB_TOKEN }}            
         
       # Runs a set of commands using the runners shell
-      - name: Run all the tests
+      - name: dump test results
         shell: pwsh
         run: |
-          docker version
-          Write-Information "Running all the tests"
-          Invoke-Pester -script .\tests\*tests.ps1 -Passthru
-          if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
+          Write-Host 'Total Tests Executed...:  ${{ steps.test_module.outputs.total_count }}'
+          Write-Host 'Total Tests PASSED.....:  ${{ steps.test_module.outputs.passed_count }}'
+          Write-Host 'Total Tests FAILED.....:  ${{ steps.test_module.outputs.failed_count }}'
