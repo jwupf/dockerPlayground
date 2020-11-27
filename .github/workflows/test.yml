@@ -27,7 +27,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run all the tests
-        shell: powershell
+        shell: pwsh
         run: |
           Write-Information "Running all the tests"
           Invoke-Pester -script .\tests\*tests.ps1
